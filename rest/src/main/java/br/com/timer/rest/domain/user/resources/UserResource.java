@@ -1,5 +1,6 @@
 package br.com.timer.rest.domain.user.resources;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
@@ -18,5 +19,7 @@ public class UserResource {
 
 	private Long pis;
 	private String name;
+	
+	@JsonIgnore
 	private String password;
 }

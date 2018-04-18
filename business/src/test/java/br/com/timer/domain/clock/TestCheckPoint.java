@@ -21,7 +21,6 @@ import br.com.timer.domain.clock.service.ClockService;
 import br.com.timer.domain.user.User;
 import br.com.timer.domain.user.service.UserService;
 import br.com.timer.exception.TimeLimitExceededException;
-import br.com.timer.security.KeyUtil;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {ApplicationConfigTest.class})
@@ -40,7 +39,7 @@ public class TestCheckPoint {
 		User user = new User();
 		user.setName("Manoel Medeiros");
 		user.setPis(1516548151l);
-		user.setPassword(KeyUtil.encodeBase64("manoel:1234"));
+		user.setPassword("1234");
 		
 		userService.save(user);
 	}
@@ -61,6 +60,14 @@ public class TestCheckPoint {
 		User user = userService.get(1516548151l);
 		
 		clockService.clockIn(user, LocalDateTime.now());
+		clockService.clockIn(user, LocalDateTime.now().minusSeconds(30));
+	}
+
+	@Test
+	public void testCheckPointOneMinute() {
+		User user = userService.get(1516548151l);
+		
+		clockService.clockIn(user, LocalDateTime.now().minusMinutes(1).minusSeconds(1));
 		clockService.clockIn(user, LocalDateTime.now());
 	}
 

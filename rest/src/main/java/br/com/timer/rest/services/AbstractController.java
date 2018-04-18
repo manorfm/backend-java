@@ -5,6 +5,7 @@ import java.util.Arrays;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import br.com.timer.domain.clock.Clock;
 import br.com.timer.rest.resources.PageResources;
 
 public abstract class AbstractController {
@@ -59,4 +60,10 @@ public abstract class AbstractController {
     	
     	return String.valueOf(o);
     }
+    
+    protected ResponseEntity<PageResources<?>> exception(String title, Exception e) {
+		PageResources<Clock> pageResource = new PageResources<>();
+		pageResource.addError(title, e.getMessage());
+		return responseError(pageResource, HttpStatus.CONFLICT);
+	}
 }

@@ -3,7 +3,6 @@ package br.com.timer.rest.domain.clock.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,24 +39,25 @@ public class ClockController extends AbstractController {
 		try {
 			User user = userService.get(clockIn.getPis());
 			clockService.clockIn(user, clockIn.getDateTime());
+			return responseOk();
 		} catch (Exception e) {
-			PageResources<Clock> pageResource = new PageResources<>();
-			pageResource.addError("Error", e.getMessage());
-			return responseError(pageResource, HttpStatus.CONFLICT);
+			return exception("User not found", e);
 		}
-		
-		return responseOk();
 	}
 	
 	@RequestMapping(value = "/user/{pis}/year/{year}/month/{month}",  method = RequestMethod.GET)
-	public ResponseEntity<PageResources<ClockResource>> listClockIn(
+	public ResponseEntity<PageResources<?>> listClockIn(
 			@PathVariable long pis, @PathVariable int year, @PathVariable int month) {
 		
-		User user = userService.get(pis);
-		List<Clock> clocks = clockService.findByUserAndPeriod(pis, month, year);
+		try {
+			User user = userService.get(pis);
+			List<Clock> clocks = clockService.findByUserAndPeriod(pis, month, year);
 		
-		ClockResource resource = clockAssembler.createResource(user, clocks);
+			ClockResource resource = clockAssembler.createResource(user, clocks);
 		
-        return responseOk(new PageResources<ClockResource>(resource));
+			return responseOk(new PageResources<ClockResource>(resource));
+		} catch (Exception e) {
+			return exception("User not found", e);
+		}
 	}
 }

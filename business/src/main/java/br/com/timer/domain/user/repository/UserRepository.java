@@ -11,4 +11,8 @@ import br.com.timer.domain.user.User;
 public interface UserRepository extends CrudRepository<User, Long> {
     
 	List<User> findAll();
+
+	User findOneByNameAndPassword(String name, String password);
+	
+	User findOneByName(String name);
 }

@@ -1,5 +1,6 @@
 package br.com.timer.domain.clock.service;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -48,9 +49,11 @@ public class ClockService {
 	
 	private void validations(User user) {
 		Clock clock = clockRepository.findTopTimerClockByUserPis(user.getPis());
-		
-		if (clock != null && LocalDateTime.now().minusMinutes(1).isBefore(clock.getTimer())) {
-			throw new TimeLimitExceededException("new check point is not allowed in less than 1 minute");
+		if (clock != null) {
+			Duration duration = Duration.between(clock.getTimer(), LocalDateTime.now());
+			if ((duration.toMillis() / 1000) <= 60) {
+				throw new TimeLimitExceededException("new check point is not allowed in less than 1 minute");
+			}
 		}
 	}
 
