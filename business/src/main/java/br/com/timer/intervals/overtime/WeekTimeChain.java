@@ -23,8 +23,8 @@ public class WeekTimeChain implements IOvertimeChain {
 	@Override
 	public long process(long overtime, List<Interval> intervals) {
 		
-		overtime =+ intervals.parallelStream()
-				.filter(interval -> EOvertimeMultiplier.of(interval.getEnd()).isNotWeekend())
+		overtime =+ intervals.stream()
+				.filter(interval -> interval.getEnd() != null && EOvertimeMultiplier.of(interval.getEnd()).isNotWeekend())
 				.mapToLong(interval -> getJustTimeOfWeek(interval))
 				.reduce(0, (x, y) -> x + y); 
 		
@@ -42,7 +42,7 @@ public class WeekTimeChain implements IOvertimeChain {
 		if (interval.getStart().getHour() < 6 && interval.getEnd().getHour() > 6) {
 			Interval intervalTime = new Interval();
 			
-			intervalTime.add(interval.getStart().withHour(6));
+			intervalTime.add(interval.getStart().withHour(6).withMinute(0));
 			intervalTime.add(interval.getEnd());
 			
 			return intervalTime.diff();
@@ -50,7 +50,7 @@ public class WeekTimeChain implements IOvertimeChain {
 			Interval intervalTime = new Interval();
 			
 			intervalTime.add(interval.getStart());
-			intervalTime.add(interval.getEnd().withHour(22));
+			intervalTime.add(interval.getEnd().withHour(22).withMinute(0));
 			
 			return intervalTime.diff();
 		}

@@ -48,13 +48,13 @@ public class WeekOvertimeChain implements IOvertimeChain {
 			Interval intervalOvertime = new Interval();
 			
 			intervalOvertime.add(interval.getStart());
-			intervalOvertime.add(interval.getEnd().withHour(6));
+			intervalOvertime.add(interval.getEnd().withHour(6).withMinute(0));
 			
 			return intervalOvertime.diff();
 		} else if (!EOvertimeMultiplier.of(interval.getEnd()).isFriday() && interval.getEnd().getHour() >= 22) {
 			Interval intervalOvertime = new Interval();
 			
-			intervalOvertime.add(interval.getStart().withHour(22));
+			intervalOvertime.add(interval.getStart().withHour(22).withMinute(0));
 			intervalOvertime.add(interval.getEnd());
 			
 			return intervalOvertime.diff();

@@ -6,6 +6,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
@@ -119,6 +120,19 @@ public class TestOvertimeChain {
 		assertEquals(7200000, chain.process(0, intervals));
 		assertEquals("02:00:00", Util.formatHours(chain.process(0, intervals)));
 	}
+	
+	@Test
+	public void testOneTimeWeekChain() {
+		List<LocalDateTime> clocks = Arrays.asList(LocalDateTime.of(2018, 4, 16, 8, 00));
+		List<Interval> intervals = IntervalTransformer.execute(clocks);
+		
+		assertThat(intervals, hasSize(1));
+		
+		WeekTimeChain chain = new WeekTimeChain();
+		
+		assertEquals(0, chain.process(0, intervals));
+		assertEquals("00:00:00", Util.formatHours(chain.process(0, intervals)));
+	}
 
 	@Test
 	public void testChainNoOverTime() {
@@ -221,7 +235,7 @@ public class TestOvertimeChain {
 	}
 	
 	private List<LocalDateTime> getClocks(int day, int hour) {
-		LocalDateTime date = LocalDateTime.of(2018, 4, day, hour, 01);
+		LocalDateTime date = LocalDateTime.of(2018, 4, day, hour, 00);
 		
 		List<LocalDateTime> clocks = new ArrayList<>();
 		clocks.add(date);
