@@ -1,0 +1,1 @@
+web: java -jar main/target/main-1.0.0.jar
