@@ -72,6 +72,14 @@ public class TestCheckPoint {
 	}
 
 	@Test
+	public void testCheckPointFuture() {
+		User user = userService.get(1516548151l);
+		
+		clockService.clockIn(user, LocalDateTime.now().plusDays(3).minusSeconds(1));
+		clockService.clockIn(user, LocalDateTime.now());
+	}
+
+	@Test
 	public void testCheckPointTwice1WithMuniteInterval() {
 		User user = userService.get(1516548151l);
 		LocalDateTime today = LocalDateTime.now();

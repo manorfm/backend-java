@@ -13,6 +13,13 @@ import lombok.Getter;
  * @author Manoel Medeiros
 s */
 public class Interval {
+	
+	public Interval() { }
+	
+	public Interval(LocalDateTime o1, LocalDateTime o2) {
+		this.add(o1);
+		this.add(o2);
+	}
 
 	private LocalDateTime start;
 	private LocalDateTime end;

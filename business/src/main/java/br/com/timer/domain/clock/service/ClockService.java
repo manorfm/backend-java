@@ -1,6 +1,5 @@
 package br.com.timer.domain.clock.service;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -12,6 +11,7 @@ import br.com.timer.domain.clock.Clock;
 import br.com.timer.domain.clock.repository.ClockRepository;
 import br.com.timer.domain.user.User;
 import br.com.timer.exception.TimeLimitExceededException;
+import br.com.timer.intervals.Interval;
 
 @Service
 public class ClockService {
@@ -43,15 +43,15 @@ public class ClockService {
 	@Transactional
 	public void clockIn(User user, LocalDateTime dateTime) {
 		Clock clock = new Clock(user, dateTime);
-		validations(user);
+		validations(user, dateTime);
 		clockRepository.save(clock);
 	}
 	
-	private void validations(User user) {
+	private void validations(User user, LocalDateTime dateTime) {
 		Clock clock = clockRepository.findTopTimerClockByUserPis(user.getPis());
 		if (clock != null) {
-			Duration duration = Duration.between(clock.getTimer(), LocalDateTime.now());
-			if ((duration.toMillis() / 1000) <= 60) {
+			Interval interval = new Interval(dateTime, clock.getTimer());
+			if ((interval.diff() / 1000) <= 60) {
 				throw new TimeLimitExceededException("new check point is not allowed in less than 1 minute");
 			}
 		}
