@@ -15,6 +15,8 @@ import br.com.timer.domain.clock.Clock;
 import br.com.timer.domain.clock.service.ClockService;
 import br.com.timer.domain.user.User;
 import br.com.timer.domain.user.service.UserService;
+import br.com.timer.exception.TimeLimitExceededException;
+import br.com.timer.exception.UserNotFoundException;
 import br.com.timer.rest.domain.clock.assembler.ClockResourcesAssembler;
 import br.com.timer.rest.domain.clock.resources.ClockInResource;
 import br.com.timer.rest.domain.clock.resources.ClockResource;
@@ -40,7 +42,9 @@ public class ClockController extends AbstractController {
 			User user = userService.get(clockIn.getPis());
 			clockService.clockIn(user, clockIn.getDateTime());
 			return responseOk();
-		} catch (Exception e) {
+		} catch (UserNotFoundException e) {
+			return exception("User not found", e);
+		} catch (TimeLimitExceededException e) {
 			return exception("User not found", e);
 		}
 	}
