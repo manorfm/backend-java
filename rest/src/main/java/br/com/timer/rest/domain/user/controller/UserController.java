@@ -91,7 +91,7 @@ public class UserController extends AbstractController {
 		
 			user.setName(resource.getName());
 			user.setPassword(resource.getPassword());
-			userService.save(user);
+			userService.update(user);
 			return response(pageResource, HttpStatus.OK);
 		} catch (UserNotFoundException e) {
 			return exception("Erro updating.", e);

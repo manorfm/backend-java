@@ -34,6 +34,11 @@ public class UserService {
 			e.printStackTrace();
 		}
 	}
+
+	@Transactional
+	public void update(User user) {
+		userRepository.save(user);
+	}
 	
 	private User findOne(Long pis) {
 		return userRepository.findOne(pis);
