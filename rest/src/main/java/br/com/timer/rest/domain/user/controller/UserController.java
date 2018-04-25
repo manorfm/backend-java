@@ -1,8 +1,6 @@
 package br.com.timer.rest.domain.user.controller;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.timer.domain.user.User;
@@ -23,7 +20,6 @@ import br.com.timer.rest.domain.user.assembler.UserResourcesAssembler;
 import br.com.timer.rest.domain.user.resources.UserResource;
 import br.com.timer.rest.resources.PageResources;
 import br.com.timer.rest.services.AbstractController;
-import br.com.timer.security.KeyUtil;
 
 @RestController
 @RequestMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -95,24 +91,6 @@ public class UserController extends AbstractController {
 			return response(pageResource, HttpStatus.OK);
 		} catch (UserNotFoundException e) {
 			return exception("Erro updating.", e);
-		}
-	}
-	
-	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
-	public ResponseEntity<?> login(@RequestParam String login, @RequestParam String password) {
-		User user = userService.login(login, password);
-		
-		if (user == null) {
-			PageResources<User> page = new PageResources<>();
-			page.addError("Authentication failed", "User or password not match");
-			return responseError(page, HttpStatus.CONFLICT);
-		} else {
-			Map<String, Object> map = new HashMap<String, Object>();
-			String token = KeyUtil.encodeBase64(user.getName() + ":" + user.getPassword());
-			
-			map.put("token", token);
-			map.put("user", userAssembler.convert(user));
-			return new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
 		}
 	}
 }

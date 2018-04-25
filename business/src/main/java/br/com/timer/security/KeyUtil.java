@@ -8,7 +8,7 @@ import java.util.Base64;
 public class KeyUtil {
 
 	/**
-    * Gera um valor rash da mensagem passando um salt
+    * Gera um valor hash da mensagem passando um salt
     * 
     * @param message mensagem
     * @param salt salt

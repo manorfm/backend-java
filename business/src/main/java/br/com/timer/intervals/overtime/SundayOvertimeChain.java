@@ -39,7 +39,7 @@ public class SundayOvertimeChain implements IOvertimeChain {
 		if (EOvertimeMultiplier.of(interval.getStart()).isSaturday()) {
 			Interval intervalOvertime = new Interval();
 			
-			intervalOvertime.add(interval.getEnd().withHour(0).withMinute(0));
+			intervalOvertime.add(interval.getEnd().withHour(0).withMinute(0).withSecond(0));
 			intervalOvertime.add(interval.getEnd());
 
 			return intervalOvertime.diff();
@@ -47,7 +47,7 @@ public class SundayOvertimeChain implements IOvertimeChain {
 			Interval intervalOvertime = new Interval();
 			
 			intervalOvertime.add(interval.getStart());
-			intervalOvertime.add(interval.getEnd().withHour(0).withMinute(0));
+			intervalOvertime.add(interval.getEnd().withHour(0).withMinute(0).withSecond(0));
 
 			return intervalOvertime.diff();
 		}
