@@ -1,8 +1,8 @@
-# ponto eletronico
+# ponto eletrônico
 
 Caso necessite rodar local, é necessário baixar o lombok.jar e rodar > java -jar lombok.jar
 
-projeto foi elaborado com java8, springboots, spring-data, orika e lombok e expôe as seguintes apis rest:
+projeto foi elaborado com java8, springboots, spring-data, query-dsl, orika e lombok e expôe as seguintes apis rest:
 
 <br>
 
